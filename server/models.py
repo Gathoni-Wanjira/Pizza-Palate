@@ -24,12 +24,18 @@ class Restaurant(db.Model):
     __tablename__ = 'restaurants'
     
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
+    name = db.Column(db.String , unique = True)
     address = db.Column(db.String)
     
     pizzas = db.relationship(
         "Pizza", secondary = "restaurant_pizzas" , back_populates = "restaurants"    
     )
+    
+    @validates("name")
+    def validate_name(self, key, name):
+        if len(name) >50:
+            raise ValueError ("Name's length unacceptable!")
+        return name
 
     
 class RestaurantPizza(db.Model):
