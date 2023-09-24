@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import validates
 
 
 
@@ -43,4 +44,10 @@ class RestaurantPizza(db.Model):
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
     
+    @validates("price")
+    def validate_price(self, key, price):
+        if not(price >= 1 and price <=30):
+            raise ValueError("The price is not in the acceptable range!")
+        return price
+            
     
