@@ -42,19 +42,22 @@ class RestaurantResourceWithId(Resource):
             response = make_response({"error" : "Restaurant Not Found!"})
             return response
            
-#     def delete (self, id):
-#         restaurant_row= Restaurant.query.filter_by(id=id).first()
-#         if restaurant_row:
-#             restaurant_pizzas = RestaurantPizza.query.filter_by(restaurant_)
-#             db.session.delete(restaurant_row)
-#             db.session.commit()
-#             response = make_response({},204)
-#             return response
-#         else:
-#             response = make_response({"error" : "Restaurant Not Found!"})
-#             return response
+    def delete (self, id):
+        restaurant_row= Restaurant.query.filter_by(id=id).first()
+        if restaurant_row:
+            restaurant_pizzas = RestaurantPizza.query.filter_by(restaurant_id = id).all()
+            for rp in restaurant_pizzas:
+                db.session.delete(rp)
+            db.session.commit()
+            db.session.delete(restaurant_row)
+            db.session.commit()
+            response = make_response({},204)
+            return response
+        else:
+            response = make_response({"error" : "Restaurant Not Found!"},404)
+            return response
         
-# api.add_resource(RestaurantResourceWithId,"/restaurants/<int:id>")
+api.add_resource(RestaurantResourceWithId,"/restaurants/<int:id>")
 
 class PizzaResource(Resource):
     def get (self):
