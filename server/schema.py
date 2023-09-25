@@ -18,6 +18,19 @@ class RestaurantWithIdSchema(Schema):
     pizzas = fields.Nested(PizzaSchema , many=True)
     
 restaurant_with_id_schema = RestaurantWithIdSchema()
+
+
+class PizzaSchema(Schema):
+    class Meta:
+        fields = ("id", "name", "ingredients")
+        
+pizzas_schema = PizzaSchema(many=True)
+class RestaurantSchema(Schema):
+    class Meta:
+        fields = ("id", "name", "address")
+        
+
+
     
    
         

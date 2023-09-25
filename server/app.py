@@ -3,7 +3,7 @@ from flask import Flask ,make_response,jsonify
 from models import db , Restaurant , Pizza , RestaurantPizza
 from flask_migrate import Migrate
 from flask_restful import Resource , Api 
-from schema import restaurants_schema , restaurant_with_id_schema
+from schema import restaurants_schema , restaurant_with_id_schema , pizzas_schema
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "ghjkjhgffghjhgfd-fghjkjhgfd-ytreiuyt=vbnm876dfgh"
@@ -42,9 +42,28 @@ class RestaurantResourceWithId(Resource):
             response = make_response({"error" : "Restaurant Not Found!"})
             return response
            
+#     def delete (self, id):
+#         restaurant_row= Restaurant.query.filter_by(id=id).first()
+#         if restaurant_row:
+#             restaurant_pizzas = RestaurantPizza.query.filter_by(restaurant_)
+#             db.session.delete(restaurant_row)
+#             db.session.commit()
+#             response = make_response({},204)
+#             return response
+#         else:
+#             response = make_response({"error" : "Restaurant Not Found!"})
+#             return response
+        
+# api.add_resource(RestaurantResourceWithId,"/restaurants/<int:id>")
+
+class PizzaResource(Resource):
+    def get (self):
+        pizzas = Pizza.query.all()
+        response = make_response(pizzas_schema.dumps(pizzas),200)
+        return response
         
         
-api.add_resource(RestaurantResourceWithId,"/restaurants/<int:id>")
+api.add_resource(PizzaResource,"/pizzas")
 
 
 if __name__ == '__main__':
