@@ -24,10 +24,14 @@ class PizzaSchema(Schema):
     class Meta:
         fields = ("id", "name", "ingredients")
         
+pizza_schema = PizzaSchema()
+
 pizzas_schema = PizzaSchema(many=True)
 class RestaurantSchema(Schema):
     class Meta:
         fields = ("id", "name", "address")
+        
+
         
 
 

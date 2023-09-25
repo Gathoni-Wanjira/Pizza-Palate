@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-from flask import Flask ,make_response,jsonify
-from models import db , Restaurant , Pizza , RestaurantPizza
+from flask import Flask ,make_response,request
+from models import db , Restaurant , Pizza , RestaurantPizza 
 from flask_migrate import Migrate
 from flask_restful import Resource , Api 
-from schema import restaurants_schema , restaurant_with_id_schema , pizzas_schema
+from schema import restaurants_schema , restaurant_with_id_schema , pizzas_schema , pizza_schema
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "ghjkjhgffghjhgfd-fghjkjhgfd-ytreiuyt=vbnm876dfgh"
@@ -67,6 +67,28 @@ class PizzaResource(Resource):
         
         
 api.add_resource(PizzaResource,"/pizzas")
+
+class RestaurantPizzaResource(Resource):
+    def post (self):
+        try:
+            restaurantpizza = RestaurantPizza(
+            price = request.get_json()["price"],
+            pizza_id = request.get_json()["pizza_id"],
+            restaurant_id= request.get_json()["restaurant_id"]
+            )
+            db.session.add(restaurantpizza)
+            db.session.commit()
+            pizza = Pizza.query.filter_by(id = request.get_json()["pizza_id"]).first()
+            response = make_response(pizza_schema.dumps(pizza),200)
+            return response
+        except ValueError as e:
+            response = make_response({  "errors": e.args},400)
+            return response
+            
+            
+        
+        
+api.add_resource(RestaurantPizzaResource,"/restaurant_pizzas")
 
 
 if __name__ == '__main__':
