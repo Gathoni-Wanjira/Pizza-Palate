@@ -14,12 +14,16 @@ migrate = Migrate(app, db)
 db.init_app(app)
 
 api = Api(app)
-class HomeResource(Resource):
-    def get (self):
-        response = make_response({"Message":"Pizza Restaurant API."},200)
-        return response
+@app.route('/')
+def home ():
+    response = {
+        "Message":"Pizza Restaurant API.",
+        "Pizza_Endpoint": '/pizzas',
+        "Restaurants_Endpoint": '/restaurants',
+        }
+    return make_response(response, 200)
         
-api.add_resource(HomeResource,"/")
+
 
 class RestaurantResource(Resource):
     def get (self):
