@@ -2,7 +2,7 @@ alembic==1.12.0
 aniso8601==9.0.1
 blinker==1.6.2
 click==8.1.7
-Faker==19.6.2
+Faker==18.13.0
 Flask==2.3.3
 Flask-Migrate==4.0.5
 Flask-RESTful==0.3.10
